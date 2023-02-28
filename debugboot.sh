@@ -1,0 +1,1 @@
+qemu-system-x86_64 -s -S -drive file=bin/os.bin -no-reboot
