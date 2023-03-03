@@ -23,10 +23,10 @@ void extern irq_handler() {
         break;
     default:
         if (irq < 32) {
-            printf("Unhandled Exception #: %d\n", irq);
+            printk("Unhandled Exception #: %d\n", irq);
             break;
         }
-        printf("Unhandled Interrupt #: %d\n", irq);
+        printk("Unhandled Interrupt #: %d\n", irq);
         PIC_send_eoi(irq);
         break;
     }
