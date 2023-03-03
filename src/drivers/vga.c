@@ -1,12 +1,20 @@
 #include "vga.h"
 #include "../lib/types.h"
 
-uint8_t bg_colour;
-uint8_t text_colour;
+/*  Use the 8-bit mode section for colour reference :
+    https://www.fountainware.com/EXPL/vga_color_palettes.htm
+
+*/
+
+uint8_t bg_colour; // Background colour
+uint8_t text_colour; // Text colour
+
+int x; // X coordinate of screen cursor
+int y; // Y coordinate of screen cursor
 
 void initVGA() {
-    bg_colour = 0x20;
-    text_colour = 0x40;
+    bg_colour = 0x68;
+    text_colour = 0x30;
     fill_screen(bg_colour);
 }
 

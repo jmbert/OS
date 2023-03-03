@@ -3,16 +3,13 @@
 #include "types.h"
 #include "../drivers/vga.h"
 
-int x;
-int y;
+int prt_cursor; // Whether to print an underscore at cursor location
 
-int prt_cursor;
+uint8_t *text_buffer; // Pointer to the beginning of the vga text buffer
 
-uint8_t *text_buffer;
+uint8_t *cursor_ptr; // Pointer to the cursor position in the text buffer
 
-uint8_t *cursor_ptr;
-
-void printf(char *fmt, ...) {
+void printk(char *fmt, ...) {
     va_list args;
 
     va_start(args, 1);
@@ -133,7 +130,7 @@ void print_binary(int n) {
 
 void print_hex(int n) {
     int digits;
-    int digit;
+    uint8_t digit;
 
     int tmpN = n;
 
@@ -182,12 +179,28 @@ uint8_t *get_buffer() {
 }
 
 void init_io() {
-    text_buffer = 0x7000;
-    cursor_ptr = text_buffer;
+    text_buffer = 0x20000;
     prt_cursor = 0;
 
+    clear_buffer();
+}
+
+void clear_buffer() {
     for (int i = 0; i < BUFFER_SIZE; i++)
     {
         text_buffer[i] = 0;
     }
+    cursor_ptr = text_buffer;
+}
+
+void set_cursor(uint32_t x, uint32_t y) {
+    cursor_ptr = text_buffer + x + y * SCREEN_WIDTH/8;
+}
+
+uint32_t get_cursor_x() {
+    return (cursor_ptr - text_buffer) % SCREEN_WIDTH/8;
+}
+
+uint32_t get_cursor_y() {
+    return (cursor_ptr - text_buffer) / SCREEN_WIDTH/8;
 }

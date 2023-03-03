@@ -2,11 +2,9 @@
 #include "ps2.h"
 #include "../lib/types.h"
 
-command echoCmd;
-command enableScanningCmd;
-command disableScanningCmd;
 
-uint8_t *keymap;
+
+uint8_t *keymap; // Current keymap pointer (contents will change based on current keymap)
 void set_keymap() {
     uint8_t keymapInit[90] =
     {
@@ -103,47 +101,13 @@ void set_keymap_shift() {
     }
 }
 void init_keyboard() {
-    echoCmd.cmdByte = ECHO;
-    enableScanningCmd.cmdByte = ENABLESCANNING;
-    disableScanningCmd.cmdByte = DISABLESCANNING;
-    
     set_keymap();
 }
 
-void send_command(command cmd) {
-    int retry = 1;
-    for (int i = 0; i < 4; i++)
-    {
-        if (!retry) {
-            break;
-        }
-        send_device_byte(cmd.cmdByte, 0);
-        uint16_t response = read_ps2_io();
-        if (response == ACK || (response == ECHO && cmd.cmdByte == ECHO)) {
-            retry = 0;
-        }
-    }
-    
-    if (!retry) {
-        send_device_byte(cmd.argByte, 0);
-    }
-    
-}
+
 
 uint8_t receive_byte() {
     return read_ps2_io();
-}
-
-command echo() {
-    return echoCmd;
-}
-
-command enable_scanning() {
-    return enableScanningCmd;
-}
-
-command disable_scanning() {
-    return disableScanningCmd;
 }
 
 

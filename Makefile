@@ -10,17 +10,17 @@ DESCRIPTORS = $(SRC)/descriptors
 
 LIB = $(SRC)/lib
 DRIVERS = $(SRC)/drivers
-INT = $(SRC)/interruptHandling
+INT = $(SRC)/interrupt_handling
 COMMON = $(SRC)/common
 
 BUILDBOOT = $(BUILD)/boot
-BUILDKERNEL =$(BUILD)/kernel
+BUILDKERNEL = $(BUILD)/kernel
 BUILDOBJECT = $(BUILD)/objects
 
 KERNELOBJECTS = $(BUILDOBJECT)/kernel
 DRIVEROBJECTS = $(BUILDOBJECT)/drivers
 LIBOBJECTS = $(BUILDOBJECT)/lib
-INTOBJECTS = $(BUILDOBJECT)/interruptHandling
+INTOBJECTS = $(BUILDOBJECT)/interrupt_handling
 COMMONOBJECTS = $(BUILDOBJECT)/common
 
 I386COMPILER = /usr/local/i386elfgcc/bin/i386-elf-gcc
@@ -28,7 +28,7 @@ I386LINKER = /usr/local/i386elfgcc/bin/i386-elf-ld
 
 DRIVERFILES = $(DRIVERS)/*
 
-all: clean init mbr kernel_entry kernel drivers lib interrupts common link final
+all: clean init mbr process_switching drivers lib interrupts common kernel_entry kernel  link final
 
 init:
 	mkdir $(BUILD)
@@ -48,9 +48,21 @@ mbr: $(BOOT)/mbr.asm $(DESCRIPTORS)/gdt.asm
 kernel_entry: $(KERNEL)/kernel_entry.asm
 	nasm $(KERNEL)/kernel_entry.asm -o $(KERNELOBJECTS)/kernel_entry.o -f elf
 
-kernel: $(KERNEL)/*.c 
+kernel: $(KERNEL)/*.c
 	@for f in $(notdir $(subst .c,, $^)) ; do \
 		$(I386COMPILER) -ffreestanding -m32 -g -c $(KERNEL)/$${f}.c -o $(KERNELOBJECTS)/$${f}.o -w -fcompare-debug-second ; \
+	done 
+
+process_switching: process_switching_c process_switching_asm
+
+process_switching_c: $(KERNEL)/process_switching/*.c
+	@for f in $(notdir $(subst .c,, $^)) ; do \
+		$(I386COMPILER) -ffreestanding -m32 -g -c $(KERNEL)/process_switching/*.c -o $(KERNELOBJECTS)/$${f}.o -w -fcompare-debug-second ; \
+	done 
+
+process_switching_asm: $(KERNEL)/process_switching/*.asm
+	@for f in $(notdir $(subst .asm,, $^)) ; do \
+		nasm $(KERNEL)/process_switching/$${f}.asm -o $(KERNELOBJECTS)/$${f}.o -f elf ; \
 	done
 
 drivers: $(DRIVERS)/*.c

@@ -1,14 +1,14 @@
 #include "portio.h"
 #include "ps2.h"
 
-int ps2Working;
+int ps2Working; // Bool to check if the PS2 works
 
-int ps2Device2Enabled;
-int ps2Device1Working;
-int ps2Device2Working;
+int ps2Device2Enabled; // Bool to check if the PS2 can handle 2 devices
+int ps2Device1Working; // Bool to check if the first device is working
+int ps2Device2Working; // Bool to check if the second device is working
 
-unsigned short device1Type;
-unsigned short device2Type;
+unsigned short device1Type; // First device type (unused)
+unsigned short device2Type; // Second device type (unused)
 
 unsigned char get_status() {
     return inb(STATUS_CMD_PORT);

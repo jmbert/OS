@@ -1,9 +1,9 @@
 #include "../lib/types.h"
 #include "idt.h"
 
-gate_entry_t idt[256];
+gate_entry_t idt[256]; // IDT to fill
 
-idtr_t idtr;
+idtr_t idtr; // IDT register
 
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
     gate_entry_t* descriptor = &idt[vector];
@@ -15,7 +15,7 @@ void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
     descriptor->zero       = 0;
 }
 
-extern void* isr_stub_table[];
+extern void* isr_stub_table[]; // Reference to the stub table located in isr_asm
 
 void idt_init() {
     idtr.start = (uint32_t)&idt[0];

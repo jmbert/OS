@@ -38,7 +38,7 @@ void PIC_remap(int offset1, int offset2)
 	outb(a2, PIC_2_DATA);
 }
 
-void IRQ_set_mask(unsigned char bitmask, int chip) {
+void IRQ_set_mask(uint8_t bitmask, int chip) {
     uint16_t port;
  
     if (!chip) {

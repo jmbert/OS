@@ -61,9 +61,6 @@ mov ah, 0x01
 mov ch, 0x3f
 int 0x10
 
-; init PICs
-
-
 cli
 lgdt [GDT_Descriptor]
 
