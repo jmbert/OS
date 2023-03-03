@@ -35,7 +35,7 @@ void extern init() {
 void prt_a() {
     for (;;) {
         if (get_timer() % 10) {
-            printf("a");
+            printk("a");
         }   
     }
     return;
@@ -44,7 +44,7 @@ void prt_a() {
 void prt_b() {
     for (;;) {
         if (get_timer() % 13) {
-            printf("b");
+            printk("b");
         }  
     }
     return;
