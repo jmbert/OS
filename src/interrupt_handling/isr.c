@@ -46,7 +46,7 @@ void handle_keypress() {
     uint8_t scancode = receive_byte();
     keyReturn keyRet = get_key(scancode);
     if (keyRet.print) {
-        printf("%c", keyRet.chr);
+        printk("%c", keyRet.chr);
     }
     PIC_send_eoi(33);
     return;
