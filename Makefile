@@ -28,7 +28,7 @@ I386LINKER = /usr/local/i386elfgcc/bin/i386-elf-ld
 
 DRIVERFILES = $(DRIVERS)/*
 
-all: clean init mbr process_switching drivers lib interrupts common kernel_entry kernel  link final
+all: init mbr process_switching drivers lib interrupts common kernel_entry kernel  link final
 
 init: | $(BUILD) $(BIN) $(BUILDBOOT) $(BUILDKERNEL) $(BUILDOBJECT) $(KERNELOBJECTS) $(DRIVEROBJECTS) $(LIBOBJECTS) $(INTOBJECTS) $(COMMONOBJECTS)
 
@@ -110,7 +110,3 @@ link: $(BUILDBOOT)/* $(KERNELOBJECTS)/*  $(LIBOBJECTS)/* $(DRIVEROBJECTS)/* $(IN
 
 final: $(BUILDKERNEL)/linked_kernel.bin
 	cat $(BUILDBOOT)/mbr.bin $(BUILDKERNEL)/linked_kernel.bin > bin/os.bin
-
-clean:
-	rm -r $(BUILD)
-	rm -r $(BIN)
