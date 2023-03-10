@@ -30,17 +30,37 @@ DRIVERFILES = $(DRIVERS)/*
 
 all: clean init mbr process_switching drivers lib interrupts common kernel_entry kernel  link final
 
-init:
-	mkdir $(BUILD)
-	mkdir $(BIN)
-	mkdir $(BUILDBOOT)
-	mkdir $(BUILDKERNEL)
-	mkdir $(BUILDOBJECT)
-	mkdir $(KERNELOBJECTS)
-	mkdir $(DRIVEROBJECTS)
-	mkdir $(LIBOBJECTS)
-	mkdir $(INTOBJECTS)
-	mkdir $(COMMONOBJECTS)
+init: | $(BUILD) $(BIN) $(BUILDBOOT) $(BUILDKERNEL) $(BUILDOBJECT) $(KERNELOBJECTS) $(DRIVEROBJECTS) $(LIBOBJECTS) $(INTOBJECTS) $(COMMONOBJECTS)
+
+$(BUILD):
+	mkdir $@
+
+$(BIN):
+	mkdir $@
+
+$(BUILDBOOT):
+	mkdir $@
+
+$(BUILDKERNEL):
+	mkdir $@
+
+$(BUILDOBJECT):
+	mkdir $@ 
+
+$(KERNELOBJECTS):
+	mkdir $@ 
+
+$(DRIVEROBJECTS):
+	mkdir $@ 
+
+$(LIBOBJECTS):
+	mkdir $@ 
+
+$(INTOBJECTS):
+	mkdir $@ 
+
+$(COMMONOBJECTS):
+	mkdir $@
 
 mbr: $(BOOT)/mbr.asm $(DESCRIPTORS)/gdt.asm 
 	nasm $(BOOT)/mbr.asm -o $(BUILDBOOT)/mbr.bin -f bin
