@@ -1,4 +1,4 @@
-PROJROOT = ~/os2
+PROJROOT = ${CURDIR}
 
 BUILD = $(PROJROOT)/build
 SRC = $(PROJROOT)/src
